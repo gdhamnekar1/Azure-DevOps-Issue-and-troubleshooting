@@ -1,0 +1,83 @@
+ NuGet restore step is failing due to a .NET SDK compatibility issue, as seen in the error message from the log:
+
+  error NETSDK1045: The current .NET SDK does not support targeting .NET Framework 4.8. 
+  Either target .NET Core, or use a version of the .NET SDK that supports .NET Framework 4.8.
+
+Your pipeline is using .NET SDK version 6.0.203, which does not support .NET Framework 4.8 projects. This mismatch causes the NuGet restore step to fail because it can’t resolve the necessary project dependencies for a .NET Framework project.
+
+
+
+Your **NuGet restore step is failing** due to a **.NET SDK compatibility issue**, as seen in the error message from the log:
+
+```
+error NETSDK1045: The current .NET SDK does not support targeting .NET Framework 4.8. 
+Either target .NET Core, or use a version of the .NET SDK that supports .NET Framework 4.8.
+```
+
+---
+
+### 🔍 Root Cause:
+
+Your pipeline is using **.NET SDK version 6.0.203**, which **does not support .NET Framework 4.8** projects. This mismatch causes the `NuGet restore` step to fail because it can’t resolve the necessary project dependencies for a .NET Framework project.
+
+---
+
+### ✅ Solution:
+
+You need to ensure that a compatible **.NET Framework SDK or MSBuild version** is available during your pipeline execution.
+
+Here’s how to fix it:
+
+---
+
+### 🔧 Fix 1: Use the Correct MSBuild Version
+
+1. In the Classic Editor:
+
+   * Edit your pipeline.
+   * In the **NuGet restore** task, make sure:
+
+     * `Path to solution` or `packages.config` is correct.
+     * **MSBuild version** is set to something like `16.11.x` (Visual Studio 2019 or later).
+   * Add a **"Use Visual Studio"** task before restore to ensure correct environment.
+
+---
+
+### 🔧 Fix 2: Install Matching SDK and Targeting Packs
+
+You can add a **task to install .NET Framework Developer Pack** if you're using a custom agent. On Microsoft-hosted agents, Visual Studio 2019 or 2022 should already have it.
+
+If self-hosted agent:
+
+* Install [.NET Framework 4.8 Developer Pack](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48)
+
+---
+
+### ✅ Alternative: Use MSBuild for Restore
+
+Instead of the NuGet task, you can try restoring packages using MSBuild:
+
+```yaml
+- task: VSBuild@1
+  inputs:
+    solution: '**/*.sln'
+    msbuildArgs: '/t:Restore'
+    platform: 'Any CPU'
+    configuration: 'Release'
+```
+
+(This only applies if you move from Classic to YAML, but similar args can be used in Classic's MSBuild task.)
+
+---
+
+### 🧪 Recommendation:
+
+Make sure the build agent you're using (Microsoft-hosted or self-hosted) has:
+
+* Visual Studio 2019 or later
+* .NET Framework 4.8 targeting pack
+* Matching NuGet CLI version (e.g., 5.x+ for .NET Framework 4.8)
+
+---
+
+Let me know if you'd like help adjusting the Classic pipeline steps directly.
