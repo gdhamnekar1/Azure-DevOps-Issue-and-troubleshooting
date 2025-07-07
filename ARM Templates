@@ -1,0 +1,52 @@
+the Error is bellow
+____________________________________________________________________________
+|      PS C:\Users\Navee\Desktop> az deployment group create                |
+| >>   --resource-group vinu9-rg                                            |
+| >>   --template-file "C:\Users\Navee\Desktop\ARM_Web-App\web-app.json"    |
+| >>   --parameters ServicePlan-Name="vinu9-sp" WebApp-Name="vinoono9"      |
+| >>                                                                        |
+| The content for this response was already consumed                        |
+_____________________________________________________________________________
+
+
+The error “The content for this response was already consumed” in Azure CLI typically means that the CLI encountered an internal issue 
+Step-by-step Fixes
+1 Validate the Template Separately
+    Run this to check your template before deploying:
+      az deployment group validate \
+  --resource-group <your-rg> \
+  --template-file <your-template>.json \
+  --parameters <your-parameters>.json
+If this fails, the issue is in your template or parameters.
+
+
+2.Use Correct Schema and Template Scope
+
+
+3. Update Your Azure CLI
+Outdated CLI versions are a common cause of this error.
+$ az upgrade
+
+
+4. Run with --debug for Diagnostics
+Use this command to get detailed logs:
+az deployment group create \
+  --resource-group <your-rg> \
+  --template-file <your-template>.json \
+  --parameters <your-parameters>.json \
+  --debug
+
+
+Look for:
+MissingRequiredProperty errors
+InvalidTemplate issues
+Any failed HTTP responses
+
+
+5. Still Not Working?
+If none of the above work:
+
+Delete .azure folder cache:
+rm -rf ~/.azure (or %USERPROFILE%\.azure on Windows)
+Restart the shell.
+Log in again: az login
