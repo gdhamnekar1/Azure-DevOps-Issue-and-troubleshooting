@@ -1,0 +1,39 @@
+The error you're encountering:
+
+```
+(MissingSubscriptionRegistration) The subscription is not registered to use namespace 'Microsoft.KeyVault'
+```
+
+means your Azure subscription **has not been registered to use the Key Vault resource provider** (`Microsoft.KeyVault`).
+
+---
+
+### ✅ Fix: Register the Key Vault resource provider
+
+You can fix this by running the following command:
+
+```bash
+az provider register --namespace Microsoft.KeyVault
+```
+
+After running this, give it **a minute or two**, then verify registration:
+
+```bash
+az provider show --namespace Microsoft.KeyVault --query "registrationState"
+```
+
+When the registration is complete, it will return:
+
+```
+"Registered"
+```
+
+---
+
+### 🔁 Then, retry your command:
+
+```bash
+az keyvault create -n aks-demo-vinod -g ecommerce-demo -l eastus --enable-rbac-authorization
+```
+
+Let me know once registration is done or if you hit any other errors.
