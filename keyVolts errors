@@ -1,0 +1,15 @@
+vinod@SHAgent:~/Azure-zero-to-hero$ kubectl get pods -n kube-system -l 'app in (secrets-store-csi-driver,secrets-store-provider-azure)' -o wide
+NAME                                     READY   STATUS    RESTARTS   AGE   IP            NODE                                NOMINATED NODE   READINESS GATES
+aks-secrets-store-csi-driver-6zzmd       3/3     Running   0          18m   10.244.1.52   aks-nodepool1-26148744-vmss000005   <none>           <none>
+aks-secrets-store-csi-driver-xz55q       3/3     Running   0          19m   10.244.0.23   aks-nodepool1-26148744-vmss000004   <none>           <none>
+aks-secrets-store-provider-azure-pmsc4   1/1     Running   0          19m   10.224.0.4    aks-nodepool1-26148744-vmss000004   <none>           <none>
+aks-secrets-store-provider-azure-z9ssl   1/1     Running   0          18m   10.224.0.5    aks-nodepool1-26148744-vmss000005   <none>           <none>
+vinod@SHAgent:~/Azure-zero-to-hero$ az keyvault create -n aks-demo-vinod -g ecommerce-demo -l eastus --enable-rbac-authorization
+(MissingSubscriptionRegistration) The subscription is not registered to use namespace 'Microsoft.KeyVault'. See https://aka.ms/rps-not-found for how to register subscriptions.
+Code: MissingSubscriptionRegistration
+Message: The subscription is not registered to use namespace 'Microsoft.KeyVault'. See https://aka.ms/rps-not-found for how to register subscriptions.
+Exception Details:      (MissingSubscriptionRegistration) The subscription is not registered to use namespace 'Microsoft.KeyVault'. See https://aka.ms/rps-not-found for how to register subscriptions.
+        Code: MissingSubscriptionRegistration
+        Message: The subscription is not registered to use namespace 'Microsoft.KeyVault'. See https://aka.ms/rps-not-found for how to register subscriptions.
+        Target: Microsoft.KeyVault
+vinod@SHAgent:~/Azure-zero-to-hero$
